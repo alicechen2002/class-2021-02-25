@@ -26,7 +26,51 @@ x <- read_csv("~/data/census/censoc_dmf_v2/censoc_dmf_v2.csv",
                                     link_abe_exact_conservative = col_double(),
                                     weight = col_double(),
                                     weight_conservative = col_double()))
+
+
+
+  
+
 ```
+
+
+
+
+
+```{r}
+
+small <- x %>% 
+  slice_sample(prop = 0.01)
+
+```
+
+```{r}
+ small %>% 
+  select(dyear, dmonth)%>%
+  group_by(dyear, dmonth) %>%
+  summarize(deaths = n()) %>%
+  filter(dmonth == 1|dmonth == 7)%>%
+  pivot_wider(names_from = dmonth, values_from = deaths) %>%
+  mutate(ratio = `1`/`7`) %>% 
+  ggplot(mapping =
+           aes(x = dyear,
+               y = ratio)) +
+  geom_point() +
+  geom_smooth(method = "lm",
+              formula = y ~ x)
+
+  
+
+```
+
+
+
+
+
+
+
+
+
 
 
 
